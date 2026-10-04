@@ -26,8 +26,8 @@ WHEEL_BASE = 0.2385          # m, do bang thuoc
 WHEEL_DIAMETER = 0.065       # m
 CIRC = math.pi * WHEEL_DIAMETER
 
-MAX_RPM = 90.0               # ~0,31 m/s
-ACCEL_LIM = 40.0             # RPM moi giay
+MAX_RPM = 100.0
+ACCEL_LIM = 60.0
 CMD_TIMEOUT = 0.5            # kieu twist_mux timeout: qua han khong co
                              # /cmd_vel thi ve RPM 0, khong giu ga cu
 

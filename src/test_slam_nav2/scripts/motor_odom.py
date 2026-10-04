@@ -6,7 +6,7 @@ ESP32 (firmware lds02rr_wifi + motor) chi pub /motor/state 10Hz:
 Khong co odom. Node nay tich phan xung encoder thanh pose diff-drive
 cho odom_tf_bridge + slam_toolbox dung (thay fake odom = 0).
 
-Thong so khop firmware + URDF: TPR 234, banh D=65mm, co so 0.2385m.
+Thong so khop firmware + URDF: TPR 227, banh D=65mm, co so 0.2385m.
 """
 import math
 
@@ -64,9 +64,10 @@ class MotorOdom(Node):
         d_r = d_ticks[1] * m_per_tick
         d_c = (d_l + d_r) * 0.5
         d_th = (d_r - d_l) / self.base
+        th_mid = self.th + d_th * 0.5
+        self.x += d_c * math.cos(th_mid)
+        self.y += d_c * math.sin(th_mid)
         self.th += d_th
-        self.x += d_c * math.cos(self.th)
-        self.y += d_c * math.sin(self.th)
 
     def _publish(self):
         if self.prev_enc is None:

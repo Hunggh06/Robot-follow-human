@@ -1,0 +1,37 @@
+# ROS 2 and local build artifacts
+**/build/
+**/install/
+**/log/
+.venv/
+.codegraph
+.codegraph/
+.omo/
+
+# Python and editor caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.vscode/
+
+# Runtime logs and generated diagnostics
+*.log
+slam_diag_*/
+frames_*.gv
+frames_*.pdf
+
+# Large model and dataset artifacts
+*.pt
+*.onnx
+*.bag
+*.db
+src/test/mic_test/models/
+
+# Local secrets and credentials
+.env
+.env.*
+*.pem
+*.key
+*.secret
+*.p12

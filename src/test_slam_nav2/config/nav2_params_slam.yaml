@@ -87,11 +87,11 @@ controller_server:
       plugin: dwb_core::DWBLocalPlanner
       debug_trajectory_details: true
       min_vel_x: -0.10
-      max_vel_x: 0.30
+      max_vel_x: 0.43
       max_vel_y: 0.0
-      max_vel_theta: 0.5
+      max_vel_theta: 0.4
       min_speed_xy: 0.02
-      max_speed_xy: 0.30
+      max_speed_xy: 0.43
       transform_tolerance: 2.0
       min_speed_theta: 0.05
       acc_lim_x: 1.5
@@ -127,7 +127,7 @@ controller_server:
       Oscillation.oscillation_reset_time: 1.0
       GoalDist.scale: 4.0
       RotateToGoal.scale: 8.0
-      RotateToGoal.slowing_factor: 5.0
+      RotateToGoal.slowing_factor: 3.0
       RotateToGoal.lookahead_time: -1.0
 local_costmap:
   local_costmap:
@@ -294,11 +294,11 @@ velocity_smoother:
     scale_velocities: false
     feedback: OPEN_LOOP
     max_velocity:
-    - 0.26
+    - 0.43
     - 0.0
     - 1.0
     min_velocity:
-    - -0.26
+    - -0.10
     - 0.0
     - -1.0
     max_accel:

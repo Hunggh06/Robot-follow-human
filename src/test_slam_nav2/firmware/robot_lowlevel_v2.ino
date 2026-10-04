@@ -93,7 +93,7 @@ uint32_t lastStats          = 0;
 #define MOTOR_PWM_CH_R   5
 #define MAX_PWM          255
 
-#define ENCODER_TPR       234.0f
+#define ENCODER_TPR       227.0f
 #define WHEEL_DIAMETER_MM 65.0f
 
 #define SWAP_MOTOR_SIDES true

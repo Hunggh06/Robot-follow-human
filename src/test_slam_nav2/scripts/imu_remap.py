@@ -3,13 +3,46 @@
 
 Dien thoai lap landscape, camera nhin truoc: truc Gx trung truc yaw
 robot (test xoay trai 90 do: Gx duong). EKF chi can van toc yaw nen
-node nay trich Gx sang angular_velocity.z, bo orientation (magnet
-trong nha nhieu, khong tin duoc).
+node nay trich Gx sang angular_velocity.z, bo orientation va gia toc
+tuyen tinh (magnet trong nha nhieu, khong tin duoc). Day la phep
+trich yaw-only cho gia lap co dinh, khong phai bien doi day du he truc.
 """
+import math
+from typing import Final
+
 import rclpy
 from rclpy.node import Node
 from rclpy.qos import QoSProfile, ReliabilityPolicy
 from sensor_msgs.msg import Imu
+
+
+FALLBACK_YAW_VARIANCE: Final = 0.05
+UNAVAILABLE_AXIS_VARIANCE: Final = 1e6
+
+
+def remap_imu(message: Imu, bias_x: float) -> Imu:
+    """Extract phone X gyro as base_link yaw with explicit partial covariance."""
+    source_x_variance = message.angular_velocity_covariance[0]
+    yaw_variance = (
+        source_x_variance
+        if math.isfinite(source_x_variance) and source_x_variance > 0.0
+        else FALLBACK_YAW_VARIANCE
+    )
+
+    result = Imu()
+    result.header.stamp = message.header.stamp
+    result.header.frame_id = 'base_link'
+    result.angular_velocity.z = message.angular_velocity.x - bias_x
+    result.angular_velocity_covariance[0] = (
+        -1.0
+        if source_x_variance == -1.0
+        else UNAVAILABLE_AXIS_VARIANCE
+    )
+    result.angular_velocity_covariance[4] = UNAVAILABLE_AXIS_VARIANCE
+    result.angular_velocity_covariance[8] = yaw_variance
+    result.orientation_covariance[0] = -1.0
+    result.linear_acceleration_covariance[0] = -1.0
+    return result
 
 
 class ImuRemap(Node):
@@ -23,13 +56,7 @@ class ImuRemap(Node):
         self.pub = self.create_publisher(Imu, '/imu/yaw', 10)
 
     def cb(self, msg):
-        o = Imu()
-        o.header.stamp = msg.header.stamp
-        o.header.frame_id = 'base_link'
-        o.angular_velocity.z = msg.angular_velocity.x - self.bias
-        o.angular_velocity_covariance[8] = 0.05
-        o.linear_acceleration_covariance[0] = -1.0
-        self.pub.publish(o)
+        self.pub.publish(remap_imu(msg, self.bias))
 
 
 def main():

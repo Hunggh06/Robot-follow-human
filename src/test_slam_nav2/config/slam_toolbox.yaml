@@ -16,7 +16,7 @@ slam_toolbox:
     minimum_travel_heading: 0.02
     # Small indoor robot: bao giu chi tiet phong nho
     resolution: 0.03
-    min_laser_range: 0.0
+    min_laser_range: 0.15
     max_laser_range: 6.0      # khop range_max cua node telem
     minimum_time_interval: 0.1
     transform_timeout: 0.2
